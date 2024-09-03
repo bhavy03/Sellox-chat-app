@@ -2,6 +2,10 @@
 
 Develop an elegant React.js Ecommerce Application.
 
+![Screenshot 2024-09-03 093433](https://github.com/user-attachments/assets/f87a4e75-1829-4c70-89d8-046c551fd33d)
+
+![Screenshot 2024-09-03 093609](https://github.com/user-attachments/assets/6a66442d-0693-4fd5-88ba-5e1d63d8e1d1)
+
 # Contributing
 
 When contributing to this repository, please first discuss the change you wish to make via issue.
