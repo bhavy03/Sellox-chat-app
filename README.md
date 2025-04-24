@@ -51,13 +51,13 @@ To set up a development environment, please follow these steps:
 1. Clone the repo
 
    ```shell
-    git clone https://github.com/bhavy03/Sellox.git
+    [git clone https://github.com/bhavy03/Sellox.git](https://github.com/bhavy03/Sellox-chat-app.git)
    ```
 
 2. Change directory to the project directory
 
    ```shell
-   cd Sellox
+   cd Sellox-chat-app
    ```
 
 ## Frontend
