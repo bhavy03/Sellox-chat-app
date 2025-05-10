@@ -2,6 +2,7 @@ import { useSelector } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
 import Navbar from "./components/Navbar"
 import Home from './pages/Home';
+import Cart from './pages/Cart';
 import Login from './pages/Login';
 import Profile from './pages/Profile';
 import Chat from './pages/chat/Chat'
@@ -16,6 +17,7 @@ import { Toaster } from 'react-hot-toast'
 import { useEffect } from 'react';
 import { useDispatch } from "react-redux"
 import { setAuthenticated } from './redux/features/cardSlice.js';
+import NotificationPage from './pages/NotificationPage.jsx';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -52,7 +54,10 @@ const App = () => {
               <Route path="/user/login" element={<Login />} />
               <Route path="/user/logout" element={<Home />} />
               <Route path="/user/register" element={<Signup />} />
+              <Route path="/cart" element={<Cart/>} />
               <Route path="/chat/" element={<Chat />} />
+              <Route path="/notification" element={<NotificationPage />} />
+
               <Route path="/chat/:recieverId" element={<Chat />} />
               <Route path="/chat/other/:recieverId" element={<Chat />} />
               <Route path="/user/:myId" element={<Profile />} />

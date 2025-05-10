@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { MdHomeFilled } from "react-icons/md";
 import { MdOutlineChatBubble } from "react-icons/md";
 import { FaCircleUser } from "react-icons/fa6";
+import { FaCartShopping } from "react-icons/fa6";
+import { IoIosNotifications } from "react-icons/io";
 // import { HiOutlineHashtag, HiOutlineHome,  HiOutlinePhotograph, HiOutlineUserGroup } from 'react-icons/hi';
 import { HiOutlineMenu, } from 'react-icons/hi';
 import { RiCloseLine } from 'react-icons/ri';
@@ -59,6 +61,8 @@ const Navbar = () => {
                     <div className="md:flex md:ml-auto md:mr-5 md:space-x-10 flex flex-row ml-auto space-x-5 mr-3 list-none items-center">
                         <div className='hidden md:space-x-10 md:flex'>
                             <li ><Link to="/"><MdHomeFilled className='w-6 h-6 hover:shadow-lg' style={{ color: 'white' }} /></Link></li>
+                            <li><Link to="notification"><IoIosNotifications  className='w-6 h-6 hover:shadow-lg' style={{ color: 'white' }}/></Link></li>
+                            <li><Link to="cart"><FaCartShopping className='w-6 h-6 hover:shadow-lg' style={{ color: 'white' }}/></Link></li>
                             <li><Link to="chat"><MdOutlineChatBubble className='w-6 h-6' style={{ color: 'white' }} /></Link></li>
                         </div>
                         {
