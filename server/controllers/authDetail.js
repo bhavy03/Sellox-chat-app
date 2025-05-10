@@ -65,7 +65,7 @@ export const logout = async (req, res) => {
 };
 
 export const getUser = async (req, res) => {
-  // console.log(req.body);
+  console.log(req.body);
   const { myId } = req.params;
   // console.log(myId);
   const user = await User.findOne({ _id: myId });
