@@ -19,7 +19,7 @@ const newCard = async (req, res) => {
     const { productName, price, details, duration, sellerName, phoneNo } =
       req.body;
     const sellerId = await User.findOne({ phoneNo });
-    // console.log(sellerId);
+    console.log(sellerId);
     const result = await cloudinary.uploader.upload(req.file.path);
     // console.log(result);
     const newCard = new Card({
