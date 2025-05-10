@@ -13,6 +13,43 @@ const Cards = ({ card }) => {
     // dispatch(setSearch(""))
   };
   const image = card.imageUrl;
+  const userId = localStorage.getItem("userId");
+  const productId = card._id;
+  // console.log("userId", userId);
+  // console.log("productId", productId);  
+
+  const handleAddToCart = async (e) => {
+    e.stopPropagation(); // Prevent triggering the parent `onClick` event
+    const userId = localStorage.getItem("userId");
+    const productId = card._id;
+
+    try {
+      const response = await fetch("http://localhost:3000/user/cart/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          buyerId: userId,
+          productId,
+          quantity: 1,
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Item added to cart:", data);
+        alert("Item added to cart successfully!");
+      } else {
+        console.error("Failed to add item to cart");
+        alert("Failed to add item to cart. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error adding item to cart:", error);
+      alert("An error occurred. Please try again.");
+    }
+  };
+
   return (
     <>
       <div className="md:pl-5 pl-3">
@@ -34,10 +71,9 @@ const Cards = ({ card }) => {
                     {card.price}
                   </p>
                   <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      console.log("Cart button clicked");
-                    }}
+                    
+                     onClick={handleAddToCart}
+                    
                     className=" text-blue-700 p-1 rounded mr-2 "
                   >
                     <FaCartShopping className="text-2xl mr-2 " />
