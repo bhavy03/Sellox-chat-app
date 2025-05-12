@@ -1,7 +1,12 @@
 const router = express.Router();
 import express from "express";
 import { login, register, logout, getUser } from "../controllers/authDetail.js";
-import { checkoutCart,addToCart } from "../controllers/cartItems.js";
+import {
+  checkoutCart,
+  addToCart,
+  getCartItems,
+  getSellerNotifications
+} from "../controllers/cartItems.js";
 import newCard from "../controllers/newCard.js";
 import upload from "../features/images.js";
 import { v2 as cloudinary } from "cloudinary";
@@ -31,6 +36,10 @@ router.post("/cart/add", async (req, res) => {
   res.status(result.success ? 200 : 500).json(result);
 });
 
-router.get("/cart/:buyerId", checkoutCart);
+router.get("/cart/:buyerId", getCartItems);
+
+router.get("/cart/checkout/:buyerId", checkoutCart);
+
+router.get('/notifications/:sellerId', getSellerNotifications);
 
 export default router;
