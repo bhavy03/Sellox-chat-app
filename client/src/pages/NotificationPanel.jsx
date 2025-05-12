@@ -1,65 +1,55 @@
-import React from "react";
-import { MdNotificationsActive } from "react-icons/md";
+import { useEffect, useState } from "react";
 
-const notifications = [
-  {
-    id: 1,
-    title: "Order Confirmed",
-    message: "Your order #12345 has been confirmed.",
-    time: "2 mins ago",
-  },
-  {
-    id: 2,
-    title: "Shipped",
-    message: "Your order #12345 has been shipped.",
-    time: "1 hour ago",
-  },
-  {
-    id: 3,
-    title: "Delivery Update",
-    message: "Your order is out for delivery.",
-    time: "Today, 11:00 AM",
-  },
-];
+// eslint-disable-next-line react/prop-types
+const NotificationPanel = ({ isOpen }) => {
+  const [notifications, setNotifications] = useState([]);
 
-const NotificationPanel = ({ isOpen, onClose }) => {
+  const sellerId = localStorage.getItem("userId");
+  // console.log(sellerId)
+
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/user/notifications/${sellerId}`);
+        const data = await response.json();
+        console.log(data)
+        setNotifications(data);
+      } catch (error) {
+        console.error("Error fetching notifications:", error);
+      }
+    };
+
+    fetchNotifications();
+  }, [isOpen, sellerId]);
+
+  // console.log(notifications)
   return (
-    <div className={`fixed top-0 right-0 h-screen w-80 bg-gray-100 shadow-2xl transition-transform duration-300 ${isOpen ? "show" : "hide"}`}>
+    <div className={`fixed top-0 right-0 h-screen w-80 bg-cyan-50 shadow-2xl transition-transform duration-300 ${isOpen ? "show" : "hide"}`}>
       <div className="header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px", borderBottom: "1px solid #ccc" }}>
         <h2 style={{ margin: 0, fontSize: "18px", fontWeight: "bold" }}>Notifications</h2>
-        {/* <button 
-          onClick={() => {
-            if (onClose) onClose();
-          }} 
-          style={{ background: "none", border: "none", fontSize: "20px", cursor: "pointer" }} 
-          aria-label="Close Notification Panel"
-        > */}
-          {/* &times;
-        </button> */}
-        {/* <button onClick={onClose} style={{ background: "none", border: "none", fontSize: "20px", cursor: "pointer" }} aria-label="Close Notification Panel">&times;</button> */}
       </div>
-    <div className="notifications-list" style={{ padding: "10px", maxHeight: "calc(100% - 50px)", overflowY: "auto" }}>
-      {notifications.length === 0 ? (
-        <p style={{ textAlign: "center", color: "#888", marginTop: "20px" }}>You're all caught up!</p>
-      ) : (
-        notifications.map((note) => (
-      <div
-        key={note.id}
-        className="notification-item"
-        style={{
-          borderBottom: "1px solid #eee",
-          padding: "10px 0",
-          marginBottom: "10px",
-        }}
-      >
-        <h3 style={{ margin: "0 0 5px", fontSize: "16px", fontWeight: "bold" }}>{note.title}</h3>
-        <p style={{ margin: "0 0 5px", fontSize: "14px", color: "#555" }}>{note.message}</p>
-        <span style={{ fontSize: "12px", color: "#999" }}>{note.time}</span>
+      <div className="notifications-list" style={{ padding: "10px", maxHeight: "calc(100% - 50px)", overflowY: "auto" }}>
+        {notifications?.length === 0 ? (
+          <p style={{ textAlign: "center", color: "#888", marginTop: "20px" }}>You&apos;re all caught up!</p>
+        ) : (
+          notifications.map((note) => (
+            <div
+              key={note._id}
+              className="notification-item bg-gray-200 rounded h-20 px-2 font-bold"
+              style={{
+                borderBottom: "1px solid #eee",
+                padding: "4px 0px",
+                marginBottom: "10px",
+              }}
+            >
+              <h3 className="ml-2 font-black" style={{ margin: "0 0 5px", fontSize: "16px", fontWeight: "bold" }} >{note.title}</h3>
+              <p className="ml-2" style={{ margin: "2 2 5px", fontSize: "14px", color: "#555" }}>{note.message}</p>
+              <span className = "ml-2 pb-1 font-semibold" style={{ fontSize: "12px", color: "#999" }}>Buyer: {note.buyer.name}</span>
+            </div>
+          ))
+        )}
       </div>
-        ))
-      )}
-    </div>
-     
+
     </div>
   );
 };

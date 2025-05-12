@@ -13,8 +13,8 @@ const Cards = ({ card }) => {
     // dispatch(setSearch(""))
   };
   const image = card.imageUrl;
-  const userId = localStorage.getItem("userId");
-  const productId = card._id;
+  // const userId = localStorage.getItem("userId");
+  // const productId = card._id;
   // console.log("userId", userId);
   // console.log("productId", productId);  
 

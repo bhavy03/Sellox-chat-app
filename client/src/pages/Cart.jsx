@@ -1,16 +1,16 @@
-import React, { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { CiShoppingCart } from "react-icons/ci";
 import { WiDaySunny } from "react-icons/wi";
 import { AiFillDelete } from "react-icons/ai"; // Import delete icon
 import { jsPDF } from "jspdf";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 const CartPage = () => {
   const [initialCartItems, setInitialCartItems] = useState([]);
   const [showDownload, setShowDownload] = useState(false);
 
-  const total = initialCartItems.reduce((acc, item) => acc + item.price, 0);
-  const {buyerId} = useParams();
+  const total = initialCartItems?.reduce((acc, item) => acc + item.product.price, 0);
+  const { buyerId } = useParams();
 
   useEffect(() => {
     const fetchCartItems = async () => {
@@ -20,7 +20,8 @@ const CartPage = () => {
         );
         if (response.ok) {
           const data = await response.json();
-          setInitialCartItems(data.initialCartItems); // Assuming the API returns an object with a `cartItems` array
+          // console.log(data);
+          setInitialCartItems(data.items); // Assuming the API returns an object with a `cartItems` array
         } else {
           console.error("Failed to fetch cart items");
         }
@@ -31,15 +32,17 @@ const CartPage = () => {
     fetchCartItems();
   }, [buyerId]);
 
+  // console.log("initial",initialCartItems);
   const handleCheckout = () => {
     setShowDownload(true);
   };
 
   const handleDelete = (id) => {
-    setCartItems(cartItems.filter((item) => item.id !== id));
+    setInitialCartItems(initialCartItems?.filter((item) => item._id !== id));
   };
 
-  const generatePDF = () => {
+  const navigate = useNavigate();
+  const generatePDF = async () => {
     const doc = new jsPDF();
     let y = 20;
 
@@ -56,10 +59,10 @@ const CartPage = () => {
     y += 10;
 
     // Table rows
-    cartItems.forEach((item) => {
-      doc.text(item.name, 10, y);
-      doc.text(item.seller, 80, y);
-      doc.text(`${item.price}`, 160, y, { align: "right" });
+    initialCartItems?.forEach((item) => {
+      doc.text(item.product.productName, 10, y);
+      doc.text(item.product.sellerName, 80, y);
+      doc.text(`${item.product.price}`, 160, y, { align: "right" });
       y += 10;
     });
 
@@ -70,6 +73,20 @@ const CartPage = () => {
 
     // Save PDF
     doc.save("purchase-bill.pdf");
+
+    try {
+      const response = await fetch(`http://localhost:3000/user/cart/checkout/${buyerId}`);
+      if (!response.ok) {
+        console.error("Checkout failed");
+        return;
+      }
+      const data = await response.json();
+      console.log(data.message);
+    } catch (error) {
+      console.log("Request not fetched")
+    }
+    setInitialCartItems([]);
+    navigate("/");
   };
 
   return (
@@ -83,7 +100,7 @@ const CartPage = () => {
           <WiDaySunny className="text-yellow-400 text-4xl" />
         </div>
 
-        {initialCartItems.length === 0 ? (
+        {initialCartItems?.length === 0 ? (
           <p className="text-gray-600">Your cart is empty.</p>
         ) : (
           <div className="space-y-4">
@@ -97,16 +114,16 @@ const CartPage = () => {
                 </tr>
               </thead>
               <tbody>
-                {initialCartItems.map((item) => (
-                  <tr key={item.id} className="border-b">
-                    <td className="p-2">{item.name}</td>
-                    <td className="p-2">{item.seller}</td>
-                    <td className="p-2">₹{item.price}</td>
+                {initialCartItems?.map((item) => (
+                  <tr key={item._id} className="border-b">
+                    <td className="p-2">{item.product.productName}</td>
+                    <td className="p-2">{item.product.sellerName}</td>
+                    <td className="p-2">₹{item.product.price}</td>
                     <td className="p-2">
                       <button
-                        onClick={() => handleDelete(item.id)}
+                        onClick={() => handleDelete(item._id)}
                         className="text-red-600 hover:text-red-800 transition"
-                        aria-label={`Delete ${item.name}`}
+                        aria-label={`Delete ${item.product.productName}`}
                       >
                         <AiFillDelete size={20} />
                       </button>
@@ -131,7 +148,7 @@ const CartPage = () => {
                 onClick={generatePDF}
                 className="mt-3 w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 transition"
               >
-                Download PDF
+                Download PDF & Complete Purchase
               </button>
             )}
           </div>
