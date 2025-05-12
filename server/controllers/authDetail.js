@@ -30,7 +30,7 @@ export const login = async (req, res) => {
 
 export const register = async (req, res) => {
   // console.log(req.body);
-  const { name, email, collegeId, password, phoneNo } = req.body;
+  const { name, email, college, password, phoneNo } = req.body;
   let user = await User.findOne({ email });
 
   if (user) {
@@ -44,7 +44,7 @@ export const register = async (req, res) => {
   user = await User.create({
     name,
     email,
-    collegeId,
+    college,
     phoneNo,
     password: hashedPassword,
   });

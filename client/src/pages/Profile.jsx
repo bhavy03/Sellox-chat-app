@@ -53,7 +53,7 @@ const Profile = () => {
                                         <hr className="mx-5" />
                                         <p className="md:text-gray-700 text-gray-800 mb-2 mt-3 md:text-2xl text-lg">Email : {myDetail?.user?.email}</p>
                                         <p className="md:text-gray-700 text-gray-800 mb-2 mt-3 md:text-2xl text-lg">Phone No : {myDetail?.user?.phoneNo}</p>
-                                        <p className="md:text-gray-700 text-gray-800 mb-2 mt-3 md:text-2xl text-lg">Enrollment No : {myDetail?.user?.collegeId}</p>
+                                        <p className="md:text-gray-700 text-gray-800 mb-2 mt-3 md:text-2xl text-lg">College : {myDetail?.user?.college}</p>
                                     </div>
                                 </div>
                             </div>
